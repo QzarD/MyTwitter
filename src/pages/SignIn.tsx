@@ -80,14 +80,17 @@ export const useStylesSignIn = makeStyles((theme) => ({
 }));
 
 function SignIn() {
-  const [visibleSignIn, setVisibleSignIn] = React.useState(false);
+  const [visibleModal, setVisibleModal] = React.useState<'signIn' | 'signUp'>();
   const classes = useStylesSignIn();
 
-  const handleClickOpen = () => {
-    setVisibleSignIn(true);
+  const handleClickOpenSignIn = (): void => {
+    setVisibleModal('signIn');
   };
-  const handleClose = () => {
-    setVisibleSignIn(false);
+  const handleClickOpenSignUp = (): void => {
+    setVisibleModal('signUp');
+  };
+  const handleClose = (): void => {
+    setVisibleModal(undefined);
   };
 
   return (
@@ -125,20 +128,77 @@ function SignIn() {
             <b>Присоединяйтесь к Твиттеру прямо сейчас!</b>
           </Typography>
           <br />
-          <Button style={{ marginBottom: 20 }} variant="contained" color="primary" fullWidth>
+          <Button
+            onClick={handleClickOpenSignUp}
+            style={{ marginBottom: 20 }}
+            variant="contained"
+            color="primary"
+            fullWidth>
             Зарегистрироваться
           </Button>
-          <Button onClick={handleClickOpen} variant="outlined" color="primary" fullWidth>
+          <Button onClick={handleClickOpenSignIn} variant="outlined" color="primary" fullWidth>
             Войти
           </Button>
 
           <ModalBlock
-            visible={visibleSignIn}
+            visible={visibleModal === 'signIn'}
             onClose={handleClose}
             title="SignIn"
             classes={classes}>
             <FormControl component="fieldset" fullWidth>
               <FormGroup aria-label="position" row>
+                <TextField
+                  className={classes.loginSideField}
+                  autoFocus
+                  margin="dense"
+                  id="email"
+                  label="Email Address"
+                  type="email"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="filled"
+                  fullWidth
+                />
+                <TextField
+                  className={classes.loginSideField}
+                  margin="dense"
+                  id="password"
+                  label="Password"
+                  type="password"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="filled"
+                  fullWidth
+                />
+                <Button onClick={handleClose} variant="contained" color="primary" fullWidth>
+                  Enter
+                </Button>
+              </FormGroup>
+            </FormControl>
+          </ModalBlock>
+
+          <ModalBlock
+            visible={visibleModal === 'signUp'}
+            onClose={handleClose}
+            title="Registration"
+            classes={classes}>
+            <FormControl component="fieldset" fullWidth>
+              <FormGroup aria-label="position" row>
+                <TextField
+                  className={classes.loginSideField}
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Name"
+                  type="name"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="filled"
+                  fullWidth
+                />
                 <TextField
                   className={classes.loginSideField}
                   autoFocus
